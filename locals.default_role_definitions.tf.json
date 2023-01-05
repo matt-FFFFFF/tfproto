@@ -1,0 +1,79 @@
+{
+  "locals": {
+    "default_role_definitions": {
+      "Application-Owners": {
+        "description": "Contributor role granted for application/operations team at resource group level",
+        "actions": ["*"],
+        "not_actions": [
+          "Microsoft.Authorization/*/write",
+          "Microsoft.Network/publicIPAddresses/write",
+          "Microsoft.Network/virtualNetworks/write",
+          "Microsoft.KeyVault/locations/deletedVaults/purge/action"
+        ],
+        "data_actions": [],
+        "not_data_actions": []
+      },
+      "Network-Management": {
+        "description": "Platform-wide global connectivity management: virtual networks, UDRs, NSGs, NVAs, VPN, Azure ExpressRoute, and others",
+        "actions": [
+          "*/read",
+          "Microsoft.Network/*",
+          "Microsoft.Resources/deployments/*",
+          "Microsoft.Support/*"
+        ],
+        "not_actions": [],
+        "data_actions": [],
+        "not_data_actions": []
+      },
+      "Network-Subnet-Contributor": {
+        "description": "Enterprise-scale custom Role Definition. Grants full access to manage Virtual Network subnets, but no other network resources.",
+        "actions": [
+          "Microsoft.Authorization/*/read",
+          "Microsoft.Insights/alertRules/*",
+          "Microsoft.ResourceHealth/availabilityStatuses/read",
+          "Microsoft.Resources/deployments/*",
+          "Microsoft.Resources/subscriptions/resourceGroups/read",
+          "Microsoft.Support/*",
+          "Microsoft.Network/*/read",
+          "Microsoft.Network/virtualNetworks/subnets/*"
+        ],
+        "not_actions": [],
+        "data_actions": [],
+        "not_data_actions": []
+      },
+      "Security-Operations": {
+        "description": "Security Administrator role with a horizontal view across the entire Azure estate and the Azure Key Vault purge policy.",
+        "actions": [
+          "*/read",
+          "*/register/action",
+          "Microsoft.KeyVault/locations/deletedVaults/purge/action",
+          "Microsoft.PolicyInsights/*",
+          "Microsoft.Authorization/policyAssignments/*",
+          "Microsoft.Authorization/policyDefinitions/*",
+          "Microsoft.Authorization/policyExemptions/*",
+          "Microsoft.Authorization/policySetDefinitions/*",
+          "Microsoft.Insights/alertRules/*",
+          "Microsoft.Resources/deployments/*",
+          "Microsoft.Security/*",
+          "Microsoft.Support/*"
+        ],
+        "not_actions": [],
+        "data_actions": [],
+        "not_data_actions": []
+      },
+      "Subscription-Owner": {
+        "description": "Delegated role for subscription owner generated from subscription Owner role",
+        "actions": ["*"],
+        "not_actions": [
+          "Microsoft.Authorization/*/write",
+          "Microsoft.Network/vpnGateways/*",
+          "Microsoft.Network/expressRouteCircuits/*",
+          "Microsoft.Network/routeTables/write",
+          "Microsoft.Network/vpnSites/*"
+        ],
+        "data_actions": [],
+        "not_data_actions": []
+      }
+    }
+  }
+}

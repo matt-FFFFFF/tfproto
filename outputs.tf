@@ -40,10 +40,8 @@ output "archetypes_deployed_level_6" {
   }
 }
 
-output "params" {
-  value = jsonencode({ for k, v in var.policy_parameters : k => {
-    for k2, v2 in v : k2 => {
-      value = v2
-    }
-  }})
+output "resultant_role_definitions" {
+  value = {
+    for k in sort(keys(local.resultant_role_definitions_map)) : k => local.resultant_role_definitions_map[k]
+  }
 }

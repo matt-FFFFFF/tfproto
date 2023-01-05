@@ -25,7 +25,6 @@ Defined as a map of objects, where the key is the archetype name and the value i
 - role_assignment_exclusions: List of role assignments to be excluded (removed from) the archetype.
 - role_definition_inclusions: List of role definitions to be included (added to) the archetype.
 - role_definition_exclusions: List of role definitions to be excluded (removed from) the archetype.
-- policy_assignments: List of policy assignments to be included in the archetype.
 DESCRIPTION
   default     = {}
 }
@@ -47,6 +46,27 @@ Defined as a map of objects, where the key is the archetype name and the value i
 - policy_set_definitions: List of policy set definitions to be included in the archetype.
 - role_assignments: List of role assignments to be included in the archetype.
 - role_definitions: List of role definitions to be included in the archetype.
+DESCRIPTION
+  default     = {}
+}
+
+variable "custom_role_definitions" {
+  type = map(object({
+    description      = optional(string, "")
+    actions          = optional(list(string), [])
+    not_actions      = optional(list(string), [])
+    data_actions     = optional(list(string), [])
+    not_data_actions = optional(list(string), [])
+  }))
+  description = <<DESCRIPTION
+Custom Role Definitions to be included in the configuration. These can be included in archetypes by referencing the map key.
+Defined as a map of objects, where the key is the role name and the value is an object with the following properties:
+
+- description: Longer form description of the role.
+- actions: List of Azure actions that are allowed by the role.
+- not_actions: List of Azure actions that are not allowed by the role.
+- data_actions: List of Azure data actions that are allowed by the role.
+- not_data_actions: List of Azure data actions that are not allowed by the role.
 DESCRIPTION
   default     = {}
 }
