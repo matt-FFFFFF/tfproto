@@ -22,12 +22,14 @@ locals {
       parameters   = try(jsonencode(d.properties.parameters), null)
       policy_definition_references = [
         for i in d.properties.policyDefinitions : {
-          # This unweildy expression is to handle the case where the policy definition is custom and we have to look up the management group to construct the resource id
-          # We take the last segment of the supplied definition id and look it up in the policy_definitions_to_archetype map
-          # If it is found, we construct the resource id using the deployed archetype name from the map
-          policy_definition_id           = lookup(local.resultant_policy_definitions_map, reverse(split("/",i.policyDefinitionId))[0], null) != null ? "/providers/Microsoft.Management/managementGroups/${local.policy_definitions_to_management_group[reverse(split("/",i.policyDefinitionId))[0]]}/providers/Microsoft.Authorization/policyDefinitions/${reverse(split("/",i.policyDefinitionId))[0]}" : i.policyDefinitionId
+          # This unwieldy expression is to handle the case where the policy definition is custom and we have to look up the management group to construct the resource id
+          # We take the last segment of the supplied definition id and look it up in the policy_definition_name_to_resource_id map
+          # to return the Azure resource id.
+          # If we don't find the policy name in the map, we assume it is a built-in policy and use the supplied id.
+          policy_definition_id           = lookup(local.resultant_policy_definitions_map, reverse(split("/", i.policyDefinitionId))[0], null) != null ? local.policy_definition_name_to_resource_id[reverse(split("/", i.policyDefinitionId))[0]] : i.policyDefinitionId
           parameters                     = try(jsonencode(i.parameters), null)
           policy_definition_reference_id = try(i.policyDefinitionReferenceId, null)
+          definition_is_builtin          = lower(split("/", i.policyDefinitionId)[1]) == "microsoft.authorization" ? true : false
         }
       ]
     } if contains(local.policy_set_definitions_in_archetypes_list, d.name)

@@ -43,20 +43,7 @@ locals {
     },
   var.custom_archetypes)
 
-  # This map is used to look up the management group id for a given policy definition
-  # If a policy definition is in multiple archetypes, the first one found is used
-  policy_definitions_to_management_group = {
-    for i in flatten([
-      for k, v in local.resultant_archetypes : [
-        for pd in v.policy_definitions : {
-          policy_definition_name = pd
-          archetype_name         = k
-        }
-      ] if length(v.policy_definitions) > 0
-    ]) : i.policy_definition_name => local.archetype_name_to_deployed_archetype[i.archetype_name][0]
-  }
-
-  # This map is used to look up the key of var.deployed_archetypes for a given archetype name
+  # This map is used to look up the key of var.deployed_archetypes (the management group id) for a given archetype name
   archetype_name_to_deployed_archetype = transpose({
     for k, v in var.archetypes_deployed : k => [v.archetype]
   })

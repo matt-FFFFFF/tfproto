@@ -195,3 +195,11 @@ variable "private_dns_zone_resource_id_prefix" {
   type = string
   default = ""
 }
+
+variable "default_location" {
+  type = string
+  description = <<DESCRIPTION
+The default location to be used for resources.
+DESCRIPTION
+  default = "westeurope"
+}

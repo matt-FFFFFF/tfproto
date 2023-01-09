@@ -28,6 +28,16 @@ output "resultant_archetypes" {
 #   }
 # }
 
+# output "resultant_policy_assignments" {
+#   value = {
+#     for k in sort(keys(local.resultant_policy_assignments_map)) : k => local.resultant_policy_assignments_map[k]
+#   }
+# }
+
+# output "resultant_distinct_builtin_policy_definition_names" {
+#   value = local.resultant_distinct_builtin_policy_definition_names
+# }
+
 output "archetypes_deployed_level_1" {
   value = {
     for k in sort(keys(local.archetypes_deployed_level_1)) : k => local.archetypes_deployed_level_1[k]

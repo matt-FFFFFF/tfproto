@@ -24,4 +24,22 @@ locals {
       parameters   = jsonencode(d.properties.parameters)
     } if contains(local.policy_definitions_in_archetypes_list, d.name)
   }
+
+  # This map is used to look up the management group id for a given policy definition
+  # If a policy definition is in multiple archetypes, the first one found is used
+  policy_definitions_to_management_group = {
+    for i in flatten([
+      for k, v in local.resultant_archetypes : [
+        for pd in v.policy_definitions : {
+          policy_definition_name = pd
+          archetype_name         = k
+        }
+      ] if length(v.policy_definitions) > 0
+    ]) : i.policy_definition_name => local.archetype_name_to_deployed_archetype[i.archetype_name][0]
+  }
+
+  # This map is used to lookup the policy definion name and provide the Azure resource id.
+  policy_definition_name_to_resource_id = {
+    for k, v in local.policy_definitions_to_management_group : k => "/providers/Microsoft.Management/managementGroups/${v}/providers/Microsoft.Authorization/policyDefinitions/${k}"
+  }
 }
