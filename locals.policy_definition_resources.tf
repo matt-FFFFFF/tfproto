@@ -2,9 +2,9 @@
 # in the resultant archetypes.
 locals {
   policy_definitions_in_archetypes_list = distinct(flatten([
-      [
-        for k, v in local.resultant_archetypes : v.policy_definitions
-      ]
+    [
+      for k, v in local.resultant_archetypes : v.policy_definitions
+    ]
     ]
   ))
 
@@ -15,6 +15,13 @@ locals {
   ]
 
   resultant_policy_definitions_map = {
-    for d in local.custom_policy_definitions_data : d.name => d if contains(local.policy_definitions_in_archetypes_list, d.name)
+    for d in local.custom_policy_definitions_data : d.name => {
+      mode         = d.properties.mode
+      display_name = d.properties.displayName
+      description  = d.properties.description
+      policy_rule  = jsonencode(d.properties.policyRule)
+      metadata     = jsonencode(d.properties.metadata)
+      parameters   = jsonencode(d.properties.parameters)
+    } if contains(local.policy_definitions_in_archetypes_list, d.name)
   }
 }

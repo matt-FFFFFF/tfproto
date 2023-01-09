@@ -207,6 +207,15 @@
         "policy_set_definitions": [],
         "role_assignments": [],
         "role_definitions": []
+      },
+      "management": {
+        "policy_assignments": [
+          "Deploy-Log-Analytics"
+        ],
+        "policy_definitions": [],
+        "policy_set_definitions": [],
+        "role_assignments": [],
+        "role_definitions": []
       }
     }
   }

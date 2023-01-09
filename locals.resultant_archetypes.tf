@@ -14,32 +14,50 @@ locals {
 
       policy_definitions = distinct(flatten([
         [
-          for pa in v.policy_definitions : pa if try(!contains(var.default_archetype_changes[k].policy_definition_exclusions, pa), true)
+          for pd in v.policy_definitions : pd if try(!contains(var.default_archetype_changes[k].policy_definition_exclusions, pd), true)
         ],
         try(var.default_archetype_changes[k].policy_definition_inclusions, [])
       ]))
 
       policy_set_definitions = distinct(flatten([
         [
-          for pa in v.policy_set_definitions : pa if try(!contains(var.default_archetype_changes[k].policy_set_definition_exclusions, pa), true)
+          for psd in v.policy_set_definitions : psd if try(!contains(var.default_archetype_changes[k].policy_set_definition_exclusions, psd), true)
         ],
         try(var.default_archetype_changes[k].policy_set_definition_inclusions, [])
       ]))
 
       role_assignments = distinct(flatten([
         [
-          for pa in v.role_assignments : pa if try(!contains(var.default_archetype_changes[k].role_assignment_exclusions, pa), true)
+          for ra in v.role_assignments : ra if try(!contains(var.default_archetype_changes[k].role_assignment_exclusions, ra), true)
         ],
         try(var.default_archetype_changes[k].role_assignment_inclusions, [])
       ]))
 
       role_definitions = distinct(flatten([
         [
-          for pa in v.role_definitions : pa if try(!contains(var.default_archetype_changes[k].role_definition_exclusions, pa), true)
+          for rd in v.role_definitions : rd if try(!contains(var.default_archetype_changes[k].role_definition_exclusions, rd), true)
         ],
         try(var.default_archetype_changes[k].role_definition_inclusions, [])
       ]))
     }
-  },
+    },
   var.custom_archetypes)
+
+  # This map is used to look up the management group id for a given policy definition
+  # If a policy definition is in multiple archetypes, the first one found is used
+  policy_definitions_to_management_group = {
+    for i in flatten([
+      for k, v in local.resultant_archetypes : [
+        for pd in v.policy_definitions : {
+          policy_definition_name = pd
+          archetype_name         = k
+        }
+      ] if length(v.policy_definitions) > 0
+    ]) : i.policy_definition_name => local.archetype_name_to_deployed_archetype[i.archetype_name][0]
+  }
+
+  # This map is used to look up the key of var.deployed_archetypes for a given archetype name
+  archetype_name_to_deployed_archetype = transpose({
+    for k, v in var.archetypes_deployed : k => [v.archetype]
+  })
 }
