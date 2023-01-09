@@ -32,15 +32,7 @@ locals {
     } if contains(local.policy_assignments_in_archetypes_list, a.name)
   }
 
-  resultant_distinct_builtin_policy_definition_names = distinct([
-    for k, v in local.resultant_policy_assignments_map : reverse(split("/", v.policy_definition_id))[0] if v.definition_is_builtin && !v.definition_is_policy_set
-  ])
-
-  resultant_distinct_builtin_policy_set_names = distinct([
-    for k, v in local.resultant_policy_assignments_map : reverse(split("/", v.policy_definition_id))[0] if v.set_definition_is_builtin && v.definition_is_policy_set
-  ])
-
-  resultant_distinct_custom_policy_set_names = distinct([
-    for k, v in local.resultant_policy_assignments_map : reverse(split("/", v.policy_definition_id))[0] if !v.set_definition_is_builtin && v.definition_is_policy_set
-  ])
+  resultant_assigned_policy_set_names = [
+    for k, v in local.resultant_policy_assignments_map : reverse(split("/", v.policy_definition_id))[0] if v.definition_is_policy_set
+  ]
 }
