@@ -1,11 +1,9 @@
 # Read library Policy Definitions and rationalize by comparing with the definitions referenced
 # in the resultant archetypes.
 locals {
-  policy_definitions_in_archetypes_list = distinct(flatten([
-    [
-      for k, v in local.resultant_archetypes : v.policy_definitions
-    ]
-    ]
+  policy_definitions_in_archetypes_list = distinct(flatten([[
+    for k, v in local.resultant_archetypes : v.policy_definitions
+    ]]
   ))
 
   custom_policy_definitions_file_list = length(local.policy_definitions_in_archetypes_list) > 0 ? tolist(fileset(local.module_library_path, "**/policy_definition_*.json")) : []
@@ -22,6 +20,10 @@ locals {
       policy_rule  = jsonencode(d.properties.policyRule)
       metadata     = jsonencode(d.properties.metadata)
       parameters   = jsonencode(d.properties.parameters)
+      assign_permissions_scopes = [
+        for k, v in try(d.properties.parameters, {}) : k if try(v.metadata.assignPermissions, false) == true
+      ]
+      role_definition_ids = try(d.properties.policyRule.then.details.roleDefinitionIds, [])
     } if contains(local.policy_definitions_in_archetypes_list, d.name)
   }
 

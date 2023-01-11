@@ -9,6 +9,8 @@ module "archetypes_level_1" {
   policy_set_definitions = each.value.policy_set_definitions
   role_definitions       = each.value.role_definitions
   role_assignments       = each.value.role_assignments
+
+  policy_assignments_role_assignment_data = local.resultant_policy_assignments_role_assignment_data
 }
 
 module "archetypes_level_2" {

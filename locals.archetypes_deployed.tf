@@ -5,7 +5,9 @@ locals {
 
   archetypes_deployed_level_1 = {
     for k, v in var.archetypes_deployed : k => {
-      policy_assignments = local.resultant_archetypes[v.archetype].policy_assignments
+      policy_assignments = {
+        for k2, v2 in local.resultant_policy_assignments_map : k2 => v2 if contains(local.resultant_archetypes[v.archetype].policy_assignments, k2)
+      }
       policy_definitions = {
         for k2, v2 in local.resultant_policy_definitions_map : k2 => v2 if contains(local.resultant_archetypes[v.archetype].policy_definitions, k2)
       }
@@ -23,7 +25,9 @@ locals {
 
   archetypes_deployed_level_2 = {
     for k, v in var.archetypes_deployed : k => {
-      policy_assignments = local.resultant_archetypes[v.archetype].policy_assignments
+      policy_assignments = {
+        for k2, v2 in local.resultant_policy_assignments_map : k2 => v2 if contains(local.resultant_archetypes[v.archetype].policy_assignments, k2)
+      }
       policy_definitions = {
         for k2, v2 in local.resultant_policy_definitions_map : k2 => v2 if contains(local.resultant_archetypes[v.archetype].policy_definitions, k2)
       }
@@ -41,7 +45,9 @@ locals {
 
   archetypes_deployed_level_3 = {
     for k, v in var.archetypes_deployed : k => {
-      policy_assignments = local.resultant_archetypes[v.archetype].policy_assignments
+      policy_assignments = {
+        for k2, v2 in local.resultant_policy_assignments_map : k2 => v2 if contains(local.resultant_archetypes[v.archetype].policy_assignments, k2)
+      }
       policy_definitions = {
         for k2, v2 in local.resultant_policy_definitions_map : k2 => v2 if contains(local.resultant_archetypes[v.archetype].policy_definitions, k2)
       }
@@ -59,7 +65,9 @@ locals {
 
   archetypes_deployed_level_4 = {
     for k, v in var.archetypes_deployed : k => {
-      policy_assignments = local.resultant_archetypes[v.archetype].policy_assignments
+      policy_assignments = {
+        for k2, v2 in local.resultant_policy_assignments_map : k2 => v2 if contains(local.resultant_archetypes[v.archetype].policy_assignments, k2)
+      }
       policy_definitions = {
         for k2, v2 in local.resultant_policy_definitions_map : k2 => v2 if contains(local.resultant_archetypes[v.archetype].policy_definitions, k2)
       }
@@ -77,7 +85,9 @@ locals {
 
   archetypes_deployed_level_5 = {
     for k, v in var.archetypes_deployed : k => {
-      policy_assignments = local.resultant_archetypes[v.archetype].policy_assignments
+      policy_assignments = {
+        for k2, v2 in local.resultant_policy_assignments_map : k2 => v2 if contains(local.resultant_archetypes[v.archetype].policy_assignments, k2)
+      }
       policy_definitions = {
         for k2, v2 in local.resultant_policy_definitions_map : k2 => v2 if contains(local.resultant_archetypes[v.archetype].policy_definitions, k2)
       }
@@ -95,7 +105,9 @@ locals {
 
   archetypes_deployed_level_6 = {
     for k, v in var.archetypes_deployed : k => {
-      policy_assignments = local.resultant_archetypes[v.archetype].policy_assignments
+      policy_assignments = {
+        for k2, v2 in local.resultant_policy_assignments_map : k2 => v2 if contains(local.resultant_archetypes[v.archetype].policy_assignments, k2)
+      }
       policy_definitions = {
         for k2, v2 in local.resultant_policy_definitions_map : k2 => v2 if contains(local.resultant_archetypes[v.archetype].policy_definitions, k2)
       }

@@ -42,6 +42,30 @@ resource "azurerm_policy_set_definition" "this" {
   ]
 }
 
+resource "azurerm_management_group_policy_assignment" "this" {
+  for_each = var.policy_assignments
+
+  name                 = each.key
+  management_group_id  = azurerm_management_group.this.id
+  policy_definition_id = each.value.policy_definition_id
+  display_name         = each.value.display_name
+  description          = each.value.description
+  parameters           = each.value.parameters
+
+  dynamic "identity" {
+    for_each = each.value.identity_type != null ? [0] : []
+    content {
+      type         = each.value.identity_type
+      identity_ids = [each.value.identity_resource_id]
+    }
+  }
+
+  depends_on = [
+    azurerm_policy_definition.this,
+    azurerm_policy_set_definition.this
+  ]
+}
+
 resource "azurerm_role_definition" "this" {
   for_each = var.role_definitions
 

@@ -4,12 +4,12 @@ output "resultant_archetypes" {
   }
 }
 
-output "policy_definition_additional_scopes" {
-  value = local.builtin_policy_definition_additional_scopes_sanitized
-}
+# output "combined_policy_definition_additional_scopes" {
+#   value = local.combined_policy_definition_additional_scopes
+# }
 
-# output "policy_definition_names_referenced_by_builtin_policy_sets" {
-#   value = local.policy_definition_names_referenced_by_builtin_policy_sets
+# output "zzz" {
+#   value = { for k in sort(keys(local.combined_policy_set_role_definition_ids)) : k => local.combined_policy_set_role_definition_ids[k] }
 # }
 
 # output "archetype_name_to_deployed_archetype" {
